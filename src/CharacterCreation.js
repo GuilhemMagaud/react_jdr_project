@@ -29,12 +29,26 @@ const ScrollFormContainer = styled.div
       transform: translate(-50%, -50%);
       aspect-ratio: 4/5;
       height: 100%;
-      max-width: 100%;
+
+      @media (orientation: portrait) {
+        width: 100%;
+        height: auto;
+      }
     `;
 
 const ScrollFormContainer2 = styled.div
     `
-      padding: 200px;
+      padding-left: 15%;
+      padding-right: 15%;
+      padding-top: 20%;
+      padding-bottom: 20%;
+
+      @media (orientation: portrait) {
+        padding-left: 15%;
+        padding-right: 15%;
+        padding-top: 25%;
+        padding-bottom: 30%;
+      }
     `;
 
 const ScrollTitle = styled.h1
@@ -42,7 +56,15 @@ const ScrollTitle = styled.h1
       ${Fonts};
       font-family: 'Breathe Fire', "MS Gothic", serif;
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 10%;
+
+      @media (height < 670px) {
+        font-size: small;
+      }
+
+      @media (width < 670px) {
+        font-size: small;
+      }
     `;
 
 const ScrollFormIndividualContainer = styled.div
@@ -50,15 +72,24 @@ const ScrollFormIndividualContainer = styled.div
       display: flex;
       flex-direction: row;
       align-items: center;
-      margin-bottom: 10px;
+      margin-bottom: 1%;
     `;
 
 const ScrollLabel = styled.label
     `
       ${Fonts};
       font-family: 'Breathe Fire', "MS Gothic", serif;
+      font-size: large;
       margin-right: 10px;
       width: 150px;
+
+      @media (height < 670px) {
+        font-size: small;
+      }
+
+      @media (width < 670px) {
+        font-size: small;
+      }
     `;
 
 const ScrollInput = styled.input
@@ -70,11 +101,28 @@ const ScrollInput = styled.input
       margin-right: 10px;
       width: 100%;
       max-width: 400px;
+      min-width: 130px;
+
+      @media (height < 670px) {
+        padding: 0px;
+      }
+
+      @media (width < 670px) {
+        padding: 0px;
+        min-width: 100px;
+      }
     `;
 
-const ScrollButtonContainer = styled.div
+const ScrollValidationButtonContainer = styled.div
     `
-        text-align: center;
+      text-align: center;
+    `;
+
+const ScrollReturnButtonContainer = styled.div
+    `
+      position: fixed;
+      top: 1em;
+      left: 1em;
     `;
 
 const ScrollButton = styled.button
@@ -84,32 +132,50 @@ const ScrollButton = styled.button
       font-size: large;
       background-color: wheat;
       border-radius: 5px;
-      margin-top: 25px;
+      margin-top: 10%;
       padding: 5px;
+
+      @media (height < 670px) {
+        padding: 0px;
+        font-size: small;
+      }
+
+      @media (width < 670px) {
+        padding: 0px;
+        font-size: small;
+      }
     `;
 
-function ScrollForm({htmlFor, label, type, id, name, placeholder, value}) {
+function ScrollForm({htmlFor, label, type, id, name, value}) {
     return (
         <ScrollFormIndividualContainer>
             <ScrollLabel htmlFor={htmlFor}>{label}:</ScrollLabel>
-            <ScrollInput type={type} id={id} name={name} placeholder={placeholder} value={value}/>
+            <ScrollInput type={type} id={id} name={name} value={value}/>
         </ScrollFormIndividualContainer>
     );
 }
 
 function ScrollValidation({label}) {
     return (
-        <ScrollButtonContainer>
+        <ScrollValidationButtonContainer>
             <ScrollButton>{label}</ScrollButton>
-        </ScrollButtonContainer>
+        </ScrollValidationButtonContainer>
+    );
+}
+
+function ScrollReturn({label}) {
+    return (
+        <ScrollReturnButtonContainer>
+            <ScrollButton>{label}</ScrollButton>
+        </ScrollReturnButtonContainer>
     );
 }
 
 function CharacterCreation() {
     const [formData, setFormData] = useState({
-        name: '',
-        class: '',
-        race: '',
+        name: 'nom',
+        class: 'classe',
+        race: 'race',
         hp: null,
         strength: null,
         intelligence: null,
@@ -126,28 +192,31 @@ function CharacterCreation() {
         <CharacterCreationBackground>
             <ScrollFormContainer>
                 <ScrollFormContainer2>
-                    <ScrollTitle>Creation du personnage</ScrollTitle>
-                    <ScrollForm htmlFor="name" label="Nom" type="text" id="name"
-                                name="name" value={formData.name}/>
-                    <ScrollForm htmlFor="class" label="Classe" type="text" id="class"
-                                name="class" value={formData.class}/>
-                    <ScrollForm htmlFor="race" label="Race" type="text" id="race"
-                                name="race" value={formData.race}/>
-                    <ScrollForm htmlFor="hp" label="Points de vie" type="number" id="hp"
-                                name="hp" value={formData.hp}/>
-                    <ScrollForm htmlFor="strength" label="Force" type="number" id="strength"
-                                name="strength" value={formData.strength}/>
-                    <ScrollForm htmlFor="intelligence" label="Intelligence" type="number" id="intelligence"
-                                name="intelligence" value={formData.intelligence}/>
-                    <ScrollForm htmlFor="observation" label="Observation" type="number" id="observation"
-                                name="observation" value={formData.observation}/>
-                    <ScrollForm htmlFor="agility" label="Agilité" type="number" id="agility"
-                                name="agility" value={formData.agility}/>
-                    <ScrollForm htmlFor="skills" label="Compétences" type="" id="skills"
-                                name="skills" value={formData.skills}/>
-                    <ScrollValidation label="Creer"/>
+                    <form>
+                        <ScrollTitle>Creation du personnage</ScrollTitle>
+                        <ScrollForm htmlFor="name" label="Nom" type="text" id="name"
+                                    name="name"/>
+                        <ScrollForm htmlFor="class" label="Classe" type="text" id="class"
+                                    name="class"/>
+                        <ScrollForm htmlFor="race" label="Race" type="text" id="race"
+                                    name="race"/>
+                        <ScrollForm htmlFor="hp" label="Points de vie" type="number" id="hp"
+                                    name="hp"/>
+                        <ScrollForm htmlFor="strength" label="Force" type="number" id="strength"
+                                    name="strength"/>
+                        <ScrollForm htmlFor="intelligence" label="Intelligence" type="number" id="intelligence"
+                                    name="intelligence"/>
+                        <ScrollForm htmlFor="observation" label="Observation" type="number" id="observation"
+                                    name="observation"/>
+                        <ScrollForm htmlFor="agility" label="Agilité" type="number" id="agility"
+                                    name="agility"/>
+                        <ScrollForm htmlFor="skills" label="Compétences" type="" id="skills"
+                                    name="skills"/>
+                        <ScrollValidation label="Creer"/>
+                    </form>
                 </ScrollFormContainer2>
             </ScrollFormContainer>
+            <ScrollReturn label="Retour"/>
         </CharacterCreationBackground>
     );
 }
