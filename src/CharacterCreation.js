@@ -1,156 +1,19 @@
 import React, {useState} from 'react';
-import styled from 'styled-components';
+import { firestore } from './firebaseConfig';
+import {
+    CharacterCreationBackground,
+    ScrollButton,
+    ScrollForm, ScrollFormContainer,
+    ScrollFormIndividualContainer, ScrollInput,
+    ScrollLabel, ScrollReturnButtonContainer, ScrollTitle,
+    ScrollValidationButtonContainer
+} from "./globalStyle";
 
-import backgroundImage from './background.png';
-import scrollImage from './scroll.png';
-import {Fonts} from './fonts/CustomFonts';
-
-const CharacterCreationBackground = styled.div
-    `
-      background-image: url(${backgroundImage});
-      background-size: cover;
-      background-position: center;
-      height: 100vh;
-      width: 100vw;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-    `;
-
-const ScrollFormContainer = styled.div
-    `
-      background-image: url(${scrollImage});
-      background-size: cover;
-      background-position: center;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      aspect-ratio: 4/5;
-      height: 100%;
-
-      @media (orientation: portrait) {
-        width: 100%;
-        height: auto;
-      }
-    `;
-
-const ScrollFormContainer2 = styled.div
-    `
-      padding-left: 15%;
-      padding-right: 15%;
-      padding-top: 20%;
-      padding-bottom: 20%;
-
-      @media (orientation: portrait) {
-        padding-left: 15%;
-        padding-right: 15%;
-        padding-top: 25%;
-        padding-bottom: 30%;
-      }
-    `;
-
-const ScrollTitle = styled.h1
-    `
-      ${Fonts};
-      font-family: 'Breathe Fire', "MS Gothic", serif;
-      text-align: center;
-      margin-bottom: 10%;
-
-      @media (height < 670px) {
-        font-size: small;
-      }
-
-      @media (width < 670px) {
-        font-size: small;
-      }
-    `;
-
-const ScrollFormIndividualContainer = styled.div
-    `
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      margin-bottom: 1%;
-    `;
-
-const ScrollLabel = styled.label
-    `
-      ${Fonts};
-      font-family: 'Breathe Fire', "MS Gothic", serif;
-      font-size: large;
-      margin-right: 10px;
-      width: 150px;
-
-      @media (height < 670px) {
-        font-size: small;
-      }
-
-      @media (width < 670px) {
-        font-size: small;
-      }
-    `;
-
-const ScrollInput = styled.input
-    `
-      flex: 1;
-      background-color: wheat;
-      padding: 10px;
-      border-radius: 5px;
-      margin-right: 10px;
-      width: 100%;
-      max-width: 400px;
-      min-width: 130px;
-
-      @media (height < 670px) {
-        padding: 0px;
-      }
-
-      @media (width < 670px) {
-        padding: 0px;
-        min-width: 100px;
-      }
-    `;
-
-const ScrollValidationButtonContainer = styled.div
-    `
-      text-align: center;
-    `;
-
-const ScrollReturnButtonContainer = styled.div
-    `
-      position: fixed;
-      top: 1em;
-      left: 1em;
-    `;
-
-const ScrollButton = styled.button
-    `
-      ${Fonts};
-      font-family: 'Breathe Fire', "MS Gothic", serif;
-      font-size: large;
-      background-color: wheat;
-      border-radius: 5px;
-      margin-top: 10%;
-      padding: 5px;
-
-      @media (height < 670px) {
-        padding: 0px;
-        font-size: small;
-      }
-
-      @media (width < 670px) {
-        padding: 0px;
-        font-size: small;
-      }
-    `;
-
-function ScrollForm({htmlFor, label, type, id, name, value}) {
+function ScrollFillUp({htmlFor, label, type, id, name, value, onChange}) {
     return (
         <ScrollFormIndividualContainer>
             <ScrollLabel htmlFor={htmlFor}>{label}:</ScrollLabel>
-            <ScrollInput type={type} id={id} name={name} value={value}/>
+            <ScrollInput type={type} id={id} name={name} value={value} onChange={onChange}/>
         </ScrollFormIndividualContainer>
     );
 }
@@ -158,7 +21,7 @@ function ScrollForm({htmlFor, label, type, id, name, value}) {
 function ScrollValidation({label}) {
     return (
         <ScrollValidationButtonContainer>
-            <ScrollButton>{label}</ScrollButton>
+            <ScrollButton type='submit'>{label}</ScrollButton>
         </ScrollValidationButtonContainer>
     );
 }
@@ -173,48 +36,67 @@ function ScrollReturn({label}) {
 
 function CharacterCreation() {
     const [formData, setFormData] = useState({
-        name: 'nom',
-        class: 'classe',
-        race: 'race',
-        hp: null,
-        strength: null,
-        intelligence: null,
-        observation: null,
-        agility: null,
-        skills: null,
+        name: '',
+        class: '',
+        race: '',
+        hp: 0,
+        strength: 0,
+        intelligence: 0,
+        observation: 0,
+        agility: 0,
+        skills: '',
     });
+
+    const handleChange = (e) => {
+        setFormData({...formData, [e.target.name]: e.target.value});
+    };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        firestore.addDoc(firestore.collection(firestore.getFirestore(), "/characters"), {
+            name: formData.name,
+            class: formData.class,
+            race: formData.race,
+            hp: formData.hp,
+            strength: formData.strength,
+            intelligence: formData.intelligence,
+            observation: formData.observation,
+            agility: formData.agility,
+            skills: formData.skills,
+        })
+            .then(() => {
+                console.log("Personnage créé avec succès !");
+            })
+            .catch((error) => {
+                console.error("Erreur lors de la création du personnage : ", error);
+            })
     };
 
     return (
         <CharacterCreationBackground>
             <ScrollFormContainer>
-                <ScrollFormContainer2>
-                    <form>
-                        <ScrollTitle>Creation du personnage</ScrollTitle>
-                        <ScrollForm htmlFor="name" label="Nom" type="text" id="name"
-                                    name="name"/>
-                        <ScrollForm htmlFor="class" label="Classe" type="text" id="class"
-                                    name="class"/>
-                        <ScrollForm htmlFor="race" label="Race" type="text" id="race"
-                                    name="race"/>
-                        <ScrollForm htmlFor="hp" label="Points de vie" type="number" id="hp"
-                                    name="hp"/>
-                        <ScrollForm htmlFor="strength" label="Force" type="number" id="strength"
-                                    name="strength"/>
-                        <ScrollForm htmlFor="intelligence" label="Intelligence" type="number" id="intelligence"
-                                    name="intelligence"/>
-                        <ScrollForm htmlFor="observation" label="Observation" type="number" id="observation"
-                                    name="observation"/>
-                        <ScrollForm htmlFor="agility" label="Agilité" type="number" id="agility"
-                                    name="agility"/>
-                        <ScrollForm htmlFor="skills" label="Compétences" type="" id="skills"
-                                    name="skills"/>
-                        <ScrollValidation label="Creer"/>
-                    </form>
-                </ScrollFormContainer2>
+                <ScrollForm onSubmit={handleSubmit}>
+                    <ScrollTitle>Creation du personnage</ScrollTitle>
+                    <ScrollFillUp htmlFor="name" label="Nom" type="text" id="name"
+                                  name="name" value={formData.name} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="class" label="Classe" type="text" id="class"
+                                  name="class" value={formData.class} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="race" label="Race" type="text" id="race"
+                                  name="race" value={formData.race} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="hp" label="Points de vie" type="number" id="hp"
+                                  name="hp" value={formData.hp} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="strength" label="Force" type="number" id="strength"
+                                  name="strength" value={formData.strength} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="intelligence" label="Intelligence" type="number" id="intelligence"
+                                  name="intelligence" value={formData.intelligence} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="observation" label="Observation" type="number" id="observation"
+                                  name="observation" value={formData.observation} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="agility" label="Agilité" type="number" id="agility"
+                                  name="agility" value={formData.agility} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="skills" label="Compétences" type="" id="skills"
+                                  name="skills" value={formData.skills} onChange={handleChange}/>
+                    <ScrollValidation label="Creer"/>
+                </ScrollForm>
             </ScrollFormContainer>
             <ScrollReturn label="Retour"/>
         </CharacterCreationBackground>
