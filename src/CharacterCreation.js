@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import { firestore } from './firebaseConfig';
+import { auth, firestore } from './firebaseConfig';
 import {
     CharacterCreationBackground,
     ScrollButton,
@@ -8,6 +8,7 @@ import {
     ScrollLabel, ScrollReturnButtonContainer, ScrollTitle,
     ScrollValidationButtonContainer
 } from "./globalStyle";
+import {useNavigate} from "react-router-dom";
 
 function ScrollFillUp({htmlFor, label, type, id, name, value, onChange}) {
     return (
@@ -27,14 +28,22 @@ function ScrollValidation({label}) {
 }
 
 function ScrollReturn({label}) {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate('/');
+    }
+
     return (
         <ScrollReturnButtonContainer>
-            <ScrollButton>{label}</ScrollButton>
+            <ScrollButton onClick={handleClick}>{label}</ScrollButton>
         </ScrollReturnButtonContainer>
     );
 }
 
 function CharacterCreation() {
+    const user = auth.getAuth().currentUser;
+
     const [formData, setFormData] = useState({
         name: '',
         class: '',
@@ -53,7 +62,8 @@ function CharacterCreation() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        firestore.addDoc(firestore.collection(firestore.getFirestore(), "/characters"), {
+        firestore.addDoc(firestore.collection(firestore.getFirestore(), `/characters`), {
+            user: user.uid,
             name: formData.name,
             class: formData.class,
             race: formData.race,

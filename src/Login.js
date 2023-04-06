@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { auth } from "./firebaseConfig";
+import { useNavigate } from "react-router-dom";
 import {
     CharacterCreationBackground,
     ScrollButton, ScrollForm, ScrollFormContainer,
@@ -27,6 +28,8 @@ function ScrollValidation({label}) {
 }
 
 function Login() {
+    const navigate = useNavigate();
+
     const [formData, setFormData] = useState({
         email: '',
         password: ''
@@ -41,8 +44,9 @@ function Login() {
         try {
             await auth.signInWithEmailAndPassword(auth.getAuth(), formData.email, formData.password);
             console.log('Successfully logged in!');
+            navigate('/characterCreation');
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     };
 
