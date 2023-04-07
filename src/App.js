@@ -1,24 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+
+import Image from './bgImage.png'
+import { styled } from '@mui/material';
+import SectionPerso from './SectionPerso/common/componentes/SectionPerso';
+
+const MainStyle = styled("div")({
+  backgroundImage: `url(${Image})`,
+  backgroundSize: 'cover',
+  backgroundPosition: 'center',
+  height: '100%',
+})
 
 function App() {
+  
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <MainStyle>
+      <SectionPerso />  
+    </MainStyle>
   );
 }
 
