@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { auth, firestore } from './firebaseConfig';
 import {
     CharacterCreationBackground,
@@ -40,7 +40,7 @@ function ScrollReturn({label}) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/');
+        navigate('/characterSelection');
     }
 
     return (
@@ -51,7 +51,7 @@ function ScrollReturn({label}) {
 }
 
 function CharacterCreation() {
-    const user = auth.getAuth().currentUser;
+    const user = auth.currentUser;
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
@@ -72,7 +72,7 @@ function CharacterCreation() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        firestore.addDoc(firestore.collection(firestore.getFirestore(), `/characters`), {
+        firestore.collection(`/characters`).add({
             user: user.uid,
             name: formData.name,
             class: formData.class,
@@ -86,7 +86,7 @@ function CharacterCreation() {
         })
             .then(() => {
                 console.log("Personnage créé avec succès !");
-                navigate('/');
+                navigate('/characterSelection');
             })
             .catch((error) => {
                 console.error("Erreur lors de la création du personnage : ", error);

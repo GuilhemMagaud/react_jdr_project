@@ -2,7 +2,7 @@ import {styled} from "@mui/material/styles";
 import {Box, Button, Input, Typography} from "@mui/material";
 import backgroundImage from "./background.png";
 import scrollImage from "./scroll.png";
-import {Fonts} from "./fonts/CustomFonts";
+import { breatheFire } from "./fonts/CustomFonts";
 
 export const CharacterCreationBackground = styled(Box)({
     backgroundImage: `url(${backgroundImage})`,
@@ -74,7 +74,7 @@ export const ScrollFormIndividualContainer = styled(Box)(
 
 export const ScrollLabel = styled("label")(
     {
-        ...Fonts,
+        ...breatheFire,
         fontFamily: "Breathe Fire, MS Gothic, serif",
         fontSize: "large",
         marginRight: "10px",

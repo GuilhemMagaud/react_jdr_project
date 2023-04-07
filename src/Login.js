@@ -42,9 +42,9 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await auth.signInWithEmailAndPassword(auth.getAuth(), formData.email, formData.password);
+            await auth.signInWithEmailAndPassword(formData.email, formData.password);
             console.log('Successfully logged in!');
-            navigate('/characterCreation');
+            navigate('/characterSelection');
         } catch (error) {
             console.log(error);
         }

@@ -1,11 +1,26 @@
-import { css } from 'styled-components';
-import BreatheFire from './BreatheFire.otf'
+import { createTheme } from '@mui/material/styles';
+import BreatheFire from './BreatheFire.otf';
 
-export const Fonts = css`
-  @font-face {
-    font-family: 'Breathe Fire';
-    src: url(${BreatheFire});
-    font-weight: normal;
-    font-style: normal;
-  }
-`;
+const breatheFire = createTheme({
+    typography: {
+        fontFamily: [
+            'Breathe Fire',
+            'Roboto',
+            '"Helvetica Neue"',
+            'Arial',
+            'sans-serif'
+        ].join(','),
+    },
+    components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                '@font-face': {
+                    fontFamily: 'Breathe Fire',
+                    src: `url(${BreatheFire})`,
+                },
+            },
+        },
+    },
+});
+
+export { breatheFire };

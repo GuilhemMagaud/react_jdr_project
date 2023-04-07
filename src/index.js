@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./Login";
 import CharacterCreation from "./CharacterCreation";
+import SectionPerso from "./SectionPerso/common/componentes/SectionPerso"
 
 const router = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
         path: "/characterCreation",
         element: <CharacterCreation />,
     },
+    {
+        path: "/characterSelection",
+        element: <SectionPerso />
+    }
 ]);
 
 createRoot(document.getElementById("root")).render(
