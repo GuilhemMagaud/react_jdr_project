@@ -10,13 +10,22 @@ import {
 } from "./globalStyle";
 import {useNavigate} from "react-router-dom";
 
-function ScrollFillUp({htmlFor, label, type, id, name, value, onChange}) {
-    return (
-        <ScrollFormIndividualContainer>
-            <ScrollLabel htmlFor={htmlFor}>{label}:</ScrollLabel>
-            <ScrollInput type={type} id={id} name={name} value={value} onChange={onChange}/>
-        </ScrollFormIndividualContainer>
-    );
+function ScrollFillUp({label, type, name, value, onChange, required = false}) {
+    if (required) {
+        return (
+            <ScrollFormIndividualContainer>
+                <ScrollLabel htmlFor={name}>{label + '*'}:</ScrollLabel>
+                <ScrollInput type={type} id={name} name={name} value={value} onChange={onChange} required/>
+            </ScrollFormIndividualContainer>
+        );
+    } else {
+        return (
+            <ScrollFormIndividualContainer>
+                <ScrollLabel htmlFor={name}>{label}:</ScrollLabel>
+                <ScrollInput type={type} id={name} name={name} value={value} onChange={onChange}/>
+            </ScrollFormIndividualContainer>
+        )
+    }
 }
 
 function ScrollValidation({label}) {
@@ -43,6 +52,7 @@ function ScrollReturn({label}) {
 
 function CharacterCreation() {
     const user = auth.getAuth().currentUser;
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         name: '',
@@ -76,6 +86,7 @@ function CharacterCreation() {
         })
             .then(() => {
                 console.log("Personnage créé avec succès !");
+                navigate('/');
             })
             .catch((error) => {
                 console.error("Erreur lors de la création du personnage : ", error);
@@ -87,24 +98,15 @@ function CharacterCreation() {
             <ScrollFormContainer>
                 <ScrollForm onSubmit={handleSubmit}>
                     <ScrollTitle>Creation du personnage</ScrollTitle>
-                    <ScrollFillUp htmlFor="name" label="Nom" type="text" id="name"
-                                  name="name" value={formData.name} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="class" label="Classe" type="text" id="class"
-                                  name="class" value={formData.class} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="race" label="Race" type="text" id="race"
-                                  name="race" value={formData.race} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="hp" label="Points de vie" type="number" id="hp"
-                                  name="hp" value={formData.hp} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="strength" label="Force" type="number" id="strength"
-                                  name="strength" value={formData.strength} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="intelligence" label="Intelligence" type="number" id="intelligence"
-                                  name="intelligence" value={formData.intelligence} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="observation" label="Observation" type="number" id="observation"
-                                  name="observation" value={formData.observation} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="agility" label="Agilité" type="number" id="agility"
-                                  name="agility" value={formData.agility} onChange={handleChange}/>
-                    <ScrollFillUp htmlFor="skills" label="Compétences" type="" id="skills"
-                                  name="skills" value={formData.skills} onChange={handleChange}/>
+                    <ScrollFillUp label="Nom" type="text" name="name" value={formData.name} onChange={handleChange} required={true}/>
+                    <ScrollFillUp label="Classe" type="text" name="class" value={formData.class} onChange={handleChange} required={true}/>
+                    <ScrollFillUp label="Race" type="text" name="race" value={formData.race} onChange={handleChange} required={true}/>
+                    <ScrollFillUp label="Points de vie" type="number" name="hp" value={formData.hp} onChange={handleChange}/>
+                    <ScrollFillUp label="Force" type="number" name="strength" value={formData.strength} onChange={handleChange}/>
+                    <ScrollFillUp label="Intelligence" type="number" name="intelligence" value={formData.intelligence} onChange={handleChange}/>
+                    <ScrollFillUp label="Observation" type="number" name="observation" value={formData.observation} onChange={handleChange}/>
+                    <ScrollFillUp label="Agilité" type="number" name="agility" value={formData.agility} onChange={handleChange}/>
+                    <ScrollFillUp htmlFor="skills" label="Compétences" type="text" name="skills" value={formData.skills} onChange={handleChange}/>
                     <ScrollValidation label="Creer"/>
                 </ScrollForm>
             </ScrollFormContainer>

@@ -5,20 +5,20 @@ import scrollImage from "./scroll.png";
 import {Fonts} from "./fonts/CustomFonts";
 
 export const CharacterCreationBackground = styled(Box)({
-        backgroundImage: `url(${backgroundImage})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        height: "100vh",
-        width: "100vw",
-        position: "fixed",
-        top: 0,
-        left: 0,
-        zIndex: -1,
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    height: "100vh",
+    width: "100vw",
+    position: "fixed",
+    top: 0,
+    left: 0,
+    zIndex: -1,
 });
 
 export const ScrollFormContainer = styled(Box)(
-{
-    backgroundImage: `url(${scrollImage})`,
+    {
+        backgroundImage: `url(${scrollImage})`,
         backgroundSize: "cover",
         backgroundPosition: "center",
         position: "fixed",
@@ -35,21 +35,21 @@ export const ScrollFormContainer = styled(Box)(
     });
 
 export const ScrollForm = styled("form")(
-    {     paddingLeft: "15%",
+    {
+        paddingLeft: "15%",
         paddingRight: "15%",
         paddingTop: "20%",
         paddingBottom: "20%",
 
         '@media (orientation: portrait)': {
-            paddingLeft: "15%",
-            paddingRight: "15%",
             paddingTop: "25%",
             paddingBottom: "30%",
         },
     });
 
 export const ScrollTitle = styled(Typography)(
-    {       fontFamily: "Breathe Fire, MS Gothic, serif",
+    {
+        fontFamily: "Breathe Fire, MS Gothic, serif",
         textAlign: "center",
         fontSize: "xx-large",
         marginBottom: "10%",
@@ -64,7 +64,8 @@ export const ScrollTitle = styled(Typography)(
     });
 
 export const ScrollFormIndividualContainer = styled(Box)(
-    {       display: "flex",
+    {
+        display: "flex",
         flexDirection: "row",
         alignItems: "center",
         marginBottom: "1%",
@@ -72,7 +73,8 @@ export const ScrollFormIndividualContainer = styled(Box)(
 ;
 
 export const ScrollLabel = styled("label")(
-    {      ...Fonts,
+    {
+        ...Fonts,
         fontFamily: "Breathe Fire, MS Gothic, serif",
         fontSize: "large",
         marginRight: "10px",
