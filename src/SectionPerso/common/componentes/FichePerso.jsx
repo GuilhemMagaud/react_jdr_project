@@ -17,7 +17,7 @@ function FichePerso({input}) {
     const [personnages, setPersonnages] = useState([]);
 
     useEffect(() => {
-        axios.get('http://localhost:3001/api/personnages')
+        axios.get('https://jdr-api-express-ny5zv2xsr-guilhemmagaud.vercel.app/api/personnages')
             .then(response => {
                 setPersonnages(response.data);
             })
